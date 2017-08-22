@@ -3654,7 +3654,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
             $numValue = self::getIEEE754($rknum);
 
             $cell = $this->phpSheet->getCell($columnString . ($row + 1));
-            if (!$this->readDataOnly) {
+            if (!$this->readDataOnly && isset($this->mapCellXfIndex[$xfIndex])) {
                 // add style information
                 $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
             }
@@ -3743,7 +3743,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 }
             }
 
-            if (!$this->readDataOnly && !$emptyCell) {
+            if (!$this->readDataOnly && !$emptyCell && isset($this->mapCellXfIndex[$xfIndex])) {
                 // add style information
                 $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
             }
@@ -3791,7 +3791,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 // offset: var; size: 4; RK value
                 $numValue = self::getIEEE754(self::getInt4d($recordData, $offset + 2));
                 $cell = $this->phpSheet->getCell($columnString . ($row + 1));
-                if (!$this->readDataOnly) {
+                if (!$this->readDataOnly && isset($this->mapCellXfIndex[$xfIndex])) {
                     // add style
                     $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
                 }
@@ -3836,7 +3836,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
             $numValue = self::extractNumber(substr($recordData, 6, 8));
 
             $cell = $this->phpSheet->getCell($columnString . ($row + 1));
-            if (!$this->readDataOnly) {
+            if (!$this->readDataOnly && isset($this->mapCellXfIndex[$xfIndex])) {
                 // add cell style
                 $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
             }
@@ -3945,7 +3945,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
             }
 
             $cell = $this->phpSheet->getCell($columnString . ($row + 1));
-            if (!$this->readDataOnly) {
+            if (!$this->readDataOnly && isset($this->mapCellXfIndex[$xfIndex])) {
                 // add cell style
                 $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
             }
@@ -4085,7 +4085,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                     break;
             }
 
-            if (!$this->readDataOnly) {
+            if (!$this->readDataOnly && isset($this->mapCellXfIndex[$xfIndex])) {
                 // add cell style
                 $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
             }
@@ -4124,7 +4124,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 // Read cell?
                 if (($this->getReadFilter() !== null) && $this->getReadFilter()->readCell($columnString, $row + 1, $this->phpSheet->getTitle())) {
                     $xfIndex = self::getInt2d($recordData, 4 + 2 * $i);
-                    $this->phpSheet->getCell($columnString . ($row + 1))->setXfIndex($this->mapCellXfIndex[$xfIndex]);
+                    if(isset($this->mapCellXfIndex[$xfIndex])){
+                        $this->phpSheet->getCell($columnString . ($row + 1))->setXfIndex($this->mapCellXfIndex[$xfIndex]);
+                    }
                 }
             }
         }
@@ -4176,7 +4178,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 $cell = $this->phpSheet->getCell($columnString . ($row + 1));
                 $cell->setValueExplicit($value, PHPExcel_Cell_DataType::TYPE_STRING);
 
-                if (!$this->readDataOnly) {
+                if (!$this->readDataOnly && isset($this->mapCellXfIndex[$xfIndex])) {
                     // add cell style
                     $cell->setXfIndex($this->mapCellXfIndex[$xfIndex]);
                 }
@@ -4209,7 +4211,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
             $xfIndex = self::getInt2d($recordData, 4);
 
             // add style information
-            if (!$this->readDataOnly && $this->readEmptyCells) {
+            if (!$this->readDataOnly && $this->readEmptyCells && isset($this->mapCellXfIndex[$xfIndex])) {
                 $this->phpSheet->getCell($columnString . ($row + 1))->setXfIndex($this->mapCellXfIndex[$xfIndex]);
             }
         }
