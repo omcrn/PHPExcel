@@ -1233,7 +1233,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 
                                         foreach (PHPExcel_Cell::extractAllCellReferencesInRange($hyperlink['ref']) as $cellReference) {
                                             $cell = $docSheet->getCell($cellReference);
-                                            if (isset($linkRel['id'])) {
+                                            if ($hyperlinks && isset($linkRel['id'])) {
                                                 $hyperlinkUrl = $hyperlinks[ (string)$linkRel['id'] ];
                                                 if (isset($hyperlink['location'])) {
                                                     $hyperlinkUrl .= '#' . (string) $hyperlink['location'];
